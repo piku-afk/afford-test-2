@@ -1,9 +1,9 @@
 import { Header } from '@/components/Header';
 import { FC, PropsWithChildren } from 'react';
 
-type Props = {};
+type DefaultLayout = {};
 
-export const DefaultLayout: FC<PropsWithChildren<Props>> = (props) => {
+export const DefaultLayout: FC<PropsWithChildren<DefaultLayout>> = (props) => {
   const { children } = props;
 
   return (

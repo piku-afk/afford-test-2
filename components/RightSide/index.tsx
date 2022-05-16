@@ -9,44 +9,20 @@ import {
   Grid,
   Rating,
   Stack,
-  styled,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
 import { FC } from 'react';
+import {
+  DiscountButton,
+  ImageContainer,
+  StyledImage,
+} from '../StyledMuiComponents';
 
-const ImageContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  paddingTop: '76.27%',
-  border: `1px solid ${theme.palette.grey[300]}`,
-  borderRadius: 12,
-}));
-
-const DiscountButton = styled(Button)(({ theme }) => ({
-  borderRadius: 12,
-  position: 'absolute',
-  top: 12,
-  left: 12,
-  zIndex: 100,
-  backgroundColor: '#F4F8EC',
-  border: `1px solid ${theme.palette.grey[300]}`,
-  color: theme.palette.secondary.main,
-  padding: '0 8px',
-  '&:hover': {
-    backgroundColor: '#F4F8EC',
-  },
-}));
-
-const StyledImage = styled(Image)({
-  backgroundColor: '#f9f9f9',
-  borderRadius: 12,
-});
-
-type Props = {
+type RightSideProps = {
   products: Product[];
 };
 
-export const RightSide: FC<Props> = (props) => {
+export const RightSide: FC<RightSideProps> = (props) => {
   const { products } = props;
   const { dispatch } = useGlobalStore();
 

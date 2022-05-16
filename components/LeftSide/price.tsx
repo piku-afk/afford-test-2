@@ -1,21 +1,6 @@
-import {
-  Box,
-  FormControl,
-  InputBase,
-  InputLabel,
-  Slider,
-  Stack,
-  styled,
-} from '@mui/material';
+import { Box, FormControl, Stack, styled } from '@mui/material';
 import { useState } from 'react';
-
-const StyledSlider = styled(Slider)(({ theme }) => ({
-  '& .MuiSlider-thumb': {
-    backgroundColor: '#fff',
-    border: `1px solid ${theme.palette.secondary.main}`,
-    // border: `1px solid red`,
-  },
-}));
+import { InputField, InputLabel, StyledSlider } from '../StyledMuiComponents';
 
 const Separator = styled('span')(({ theme }) => ({
   color: theme.palette.text.disabled,
@@ -25,26 +10,6 @@ const Separator = styled('span')(({ theme }) => ({
   left: '48.5%',
   translate: 'transform(-50%, -50%)',
   marginLeft: 0,
-}));
-
-const StyledLabel = styled(InputLabel)(({ theme }) => ({
-  fontWeight: 600,
-  color: theme.palette.text.primary,
-}));
-
-const StyledInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(2.5),
-  },
-  '& .MuiInputBase-input': {
-    position: 'relative',
-    backgroundColor: theme.palette.mode === 'light' ? '#fcfcfb' : '#2b2b2b',
-    border: '1px solid #ced4da',
-    fontSize: 12,
-    width: 'auto',
-    borderRadius: 12,
-    padding: '8px 16px',
-  },
 }));
 
 export const Price = () => {
@@ -57,7 +22,6 @@ export const Price = () => {
   return (
     <Box>
       <StyledSlider
-        // size='small'
         color='secondary'
         getAriaLabel={() => 'Temperature range'}
         value={value}
@@ -66,8 +30,8 @@ export const Price = () => {
       />
       <Stack direction='row' spacing={4} sx={{ position: 'relative' }}>
         <FormControl size='small' variant='standard' color='secondary'>
-          <StyledLabel shrink>Min</StyledLabel>
-          <StyledInput
+          <InputLabel shrink>Min</InputLabel>
+          <InputField
             type='number'
             inputProps={{ min: 0 }}
             value={value[0]}
@@ -75,8 +39,8 @@ export const Price = () => {
           />
         </FormControl>
         <FormControl size='small' variant='standard' color='secondary'>
-          <StyledLabel shrink>Max</StyledLabel>
-          <StyledInput
+          <InputLabel shrink>Max</InputLabel>
+          <InputField
             value={value[1]}
             onChange={(e) => setValue((prev) => [prev[0], +e.target.value])}
           />

@@ -1,44 +1,10 @@
-import {
-  Box,
-  Button,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  OutlinedInput,
-  withStyles,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, InputAdornment, Menu } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from 'react';
 import { useGlobalStore } from '@/context/GlobalStore';
-
-const InputField = styled(OutlinedInput)(({ theme }) => ({
-  borderRadius: 12,
-  minWidth: 400,
-  paddingLeft: 0,
-  backgroundColor: '#F9F9F9',
-  '& .MuiOutlinedInput-input': {
-    fontSize: 14,
-  },
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  textTransform: 'none',
-  paddingLeft: 16,
-  borderTopLeftRadius: 12,
-  borderBottomLeftRadius: 12,
-  color: 'black',
-  '& .MuiButton-endIcon': {
-    color: theme.palette.secondary.main,
-  },
-}));
-
-const StyledMenuItem = styled(MenuItem)({
-  fontSize: 14,
-  paddingTop: 6,
-  paddingBottom: 6,
-});
+import { SearchField } from '../StyledMuiComponents/inputField';
+import { SearchButton, SearchMenuItem } from '../StyledMuiComponents';
 
 const CategoryDropdown = () => {
   const {
@@ -60,13 +26,13 @@ const CategoryDropdown = () => {
         borderRight: `1px solid ${theme.palette.grey[400]}`,
         height: 18,
       })}>
-      <StyledButton
+      <SearchButton
         color='secondary'
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}>
         {' '}
         All categories
-      </StyledButton>
+      </SearchButton>
       <Menu
         id='demo-customized-menu'
         anchorEl={anchorEl}
@@ -89,9 +55,9 @@ const CategoryDropdown = () => {
           const { ID, name } = category;
 
           return (
-            <StyledMenuItem key={ID} onClick={handleClose} disableRipple>
+            <SearchMenuItem key={ID} onClick={handleClose} disableRipple>
               {name}
-            </StyledMenuItem>
+            </SearchMenuItem>
           );
         })}
       </Menu>
@@ -102,7 +68,7 @@ const CategoryDropdown = () => {
 export const SearchBar = () => {
   return (
     <Box sx={{ marginLeft: 'auto', marginRight: 'auto', minWidth: 640 }}>
-      <InputField
+      <SearchField
         placeholder='Search for Products, categories...'
         color='secondary'
         size='small'

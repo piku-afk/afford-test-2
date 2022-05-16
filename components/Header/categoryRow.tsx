@@ -1,6 +1,6 @@
+import { Box, Stack } from '@mui/material';
 import { useGlobalStore } from '@/context/GlobalStore';
 import { ParentWrapper } from '@/layouts/wrapper';
-import { Box, Stack } from '@mui/material';
 import { CategoryDropdown } from './dropdown';
 
 export const CategoryRow = () => {

@@ -1,32 +1,13 @@
-import {
-  AppBar,
-  Badge,
-  Box,
-  Container,
-  IconButton,
-  styled,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import { useGlobalStore } from '@/context/GlobalStore';
-import { SearchBar } from './searchBar';
-import { CategoryRow } from './categoryRow';
-import { useState } from 'react';
-import { Cart } from '../Cart';
 import { ParentWrapper } from '@/layouts/wrapper';
-
-const StyledBadge = styled(Badge)({
-  '& .MuiBadge-badge': {
-    backgroundColor: '#E5704B',
-    color: 'white',
-    fontSize: 12,
-    minWidth: 0,
-    lineHeight: '20px',
-    // height: 'fit-content',
-  },
-});
+import { useGlobalStore } from '@/context/GlobalStore';
+import { useState } from 'react';
+import { CategoryRow } from './categoryRow';
+import { SearchBar } from './searchBar';
+import { Cart } from '../Cart';
+import { CartCountBadge } from '../StyledMuiComponents';
 
 export const Header = () => {
   const {
@@ -67,14 +48,14 @@ export const Header = () => {
               size='large'
               sx={{ marginLeft: 1 }}
               onClick={showCart}>
-              <StyledBadge
+              <CartCountBadge
                 badgeContent={cart.length}
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'left',
                 }}>
                 <ShoppingBagOutlinedIcon />
-              </StyledBadge>
+              </CartCountBadge>
             </IconButton>
           </Box>
         </Toolbar>

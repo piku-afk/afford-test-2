@@ -1,25 +1,5 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  Stack,
-  styled,
-  Rating as MuiRating,
-} from '@mui/material';
-import { FC } from 'react';
-
-const StyledLabel = styled(FormControlLabel)({
-  marginLeft: 0,
-  '& .MuiFormControlLabel-label': {
-    fontSize: 14,
-    display: 'flex',
-    alignItems: 'center',
-  },
-});
-
-const StyledCheckBox = styled(Checkbox)({
-  padding: 4,
-  '& > svg': { fontSize: 16 },
-});
+import { Stack, Rating as MuiRating } from '@mui/material';
+import { BrandCheckBox, RatingLabel } from '../StyledMuiComponents';
 
 const rating = [5, 4, 3, 2, 1];
 
@@ -28,7 +8,7 @@ export const Rating = () => {
     <Stack>
       {rating.map((item) => {
         return (
-          <StyledLabel
+          <RatingLabel
             key={item}
             label={
               <MuiRating
@@ -38,7 +18,7 @@ export const Rating = () => {
                 value={item}
               />
             }
-            control={<StyledCheckBox size='small' color='secondary' />}
+            control={<BrandCheckBox size='small' color='secondary' />}
           />
         );
       })}

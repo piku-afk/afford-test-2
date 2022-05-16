@@ -37,16 +37,16 @@ export const reducer = (
       return { ...state, brands: payload };
     case ActionTypes.addToCart: {
       const { id } = payload;
-      const { cart } = state;
-      const product = cart.filter((item) => item.id === id)[0];
-      if (product) {
-        const newCart = cart.map((item) => {
-          if (item.id === id && item.quantity) {
-            item.quantity += 1;
-          }
-          return item;
-        });
-        console.log(newCart);
+      const searchIndex = state.cart.findIndex((item) => item.id === id);
+      if (searchIndex > -1) {
+        const newCart = [
+          ...state.cart.slice(0, searchIndex),
+          {
+            ...state.cart[searchIndex],
+            quantity: (state.cart[searchIndex].quantity || 0) + 1,
+          },
+          ...state.cart.slice(searchIndex + 1),
+        ];
         return { ...state, cart: newCart };
       }
 

@@ -1,25 +1,14 @@
-import { Button, Menu, MenuItem } from '@mui/material';
-import { FC, useState } from 'react';
+import { Menu } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { styled } from '@mui/system';
+import { FC, useState } from 'react';
 import { Category } from '@/context/initialState';
+import { BaseButton, CategoryRowMenuItem } from '../StyledMuiComponents';
 
-const StyledButton = styled(Button)({
-  textTransform: 'none',
-  borderRadius: 12,
-  backgroundColor: 'inherit',
-});
-
-const StyledMenuItem = styled(MenuItem)({
-  fontSize: 13,
-  paddingTop: 4,
-  paddingBottom: 4,
-});
-
-type Props = {
+type CategoryDropdownProps = {
   category: Category;
 };
-export const CategoryDropdown: FC<Props> = (props) => {
+
+export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
   const { category } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,7 +22,7 @@ export const CategoryDropdown: FC<Props> = (props) => {
 
   return (
     <>
-      <StyledButton
+      <BaseButton
         size='small'
         id='unique-id'
         variant='contained'
@@ -41,7 +30,7 @@ export const CategoryDropdown: FC<Props> = (props) => {
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}>
         {name}
-      </StyledButton>
+      </BaseButton>
       <Menu
         id='demo-customized-menu'
         anchorEl={anchorEl}
@@ -65,9 +54,9 @@ export const CategoryDropdown: FC<Props> = (props) => {
           const { ID, name } = category;
 
           return (
-            <StyledMenuItem key={ID} onClick={handleClose} disableRipple>
+            <CategoryRowMenuItem key={ID} onClick={handleClose} disableRipple>
               {name}
-            </StyledMenuItem>
+            </CategoryRowMenuItem>
           );
         })}
       </Menu>

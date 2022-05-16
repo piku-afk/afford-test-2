@@ -1,3 +1,5 @@
+import { useGlobalStore } from '@/context/GlobalStore';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -8,9 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FC } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
 import { ProductCard } from './productCard';
-import { useGlobalStore } from '@/context/GlobalStore';
 
 type CardProps = {
   id: string;
@@ -28,6 +28,8 @@ export const Cart: FC<CardProps> = (props) => {
     const { price, quantity = 1 } = next;
     return +price * quantity + initial;
   }, 0);
+
+  const emptyCart = cart.length === 0;
 
   return (
     <Popover
@@ -48,6 +50,7 @@ export const Cart: FC<CardProps> = (props) => {
           width: 360,
           borderRadius: '8px',
           height: 'calc(100vh - 108px)',
+          maxHeight: 920,
           overflow: 'hidden',
         },
       }}>
@@ -76,20 +79,34 @@ export const Cart: FC<CardProps> = (props) => {
               height: 'calc(100% - 74px)',
               overflowY: 'auto',
             }}>
-            {cart.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {emptyCart ? (
+              <Typography
+                color='InactiveCaptionText'
+                align='center'
+                fontWeight={500}>
+                Empty cart
+              </Typography>
+            ) : (
+              cart.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </Box>
         </Stack>
-        <Box sx={(theme) => ({ boxShadow: theme.shadows[2] })}>
-          <Box sx={{ paddingX: 2, paddingY: 1.6 }}>
-            <Typography variant='caption' sx={{ fontWeight: 600 }}>
-              Subtotal
-            </Typography>
-            <Typography variant='h6' sx={{ fontWeight: 600 }}>
-              {total} USD
-            </Typography>
-          </Box>
+        <Box
+          sx={(theme) => ({
+            ...(!emptyCart && { boxShadow: theme.shadows[2] }),
+          })}>
+          {!emptyCart && (
+            <Box sx={{ paddingX: 2, paddingY: 1.6 }}>
+              <Typography variant='caption' sx={{ fontWeight: 600 }}>
+                Subtotal
+              </Typography>
+              <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                {total} USD
+              </Typography>
+            </Box>
+          )}
           <Divider />
           <Box sx={{ paddingX: 2, padding: 1.6 }}>
             <Stack
@@ -105,6 +122,7 @@ export const Cart: FC<CardProps> = (props) => {
                   textTransform: 'none',
                   fontSize: 13,
                 }}
+                disabled={emptyCart}
                 color='secondary'
                 variant='contained'
                 disableElevation>

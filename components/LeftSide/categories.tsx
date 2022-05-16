@@ -1,26 +1,10 @@
-import { useGlobalStore } from '@/context/GlobalStore';
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Stack,
-  styled,
-} from '@mui/material';
+import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC } from 'react';
+import { useGlobalStore } from '@/context/GlobalStore';
+import { CategoryCheckBox, StyledLabel } from '../StyledMuiComponents';
 
-const StyledLabel = styled(FormControlLabel)({
-  '& .MuiFormControlLabel-label': {
-    fontSize: 14,
-  },
-});
-
-const StyledCheckBox = styled(Checkbox)({
-  padding: 4,
-  '& > svg': { fontSize: 14 },
-});
-
-type Props = {
+type CategoriesProps = {
   value: {
     [key: string]: {
       [key: string]: boolean;
@@ -32,7 +16,7 @@ type Props = {
   }) => void;
 };
 
-export const Categories: FC<Props> = (props) => {
+export const Categories: FC<CategoriesProps> = (props) => {
   const { value, handleChange } = props;
   const {
     state: { categories },
@@ -66,7 +50,7 @@ export const Categories: FC<Props> = (props) => {
                 },
               }}
               control={
-                <StyledCheckBox
+                <CategoryCheckBox
                   size='small'
                   color='secondary'
                   checked={parentCheck}
@@ -90,7 +74,7 @@ export const Categories: FC<Props> = (props) => {
                     key={ID}
                     label={name}
                     control={
-                      <StyledCheckBox
+                      <CategoryCheckBox
                         size='small'
                         color='secondary'
                         checked={checked}
@@ -100,8 +84,6 @@ export const Categories: FC<Props> = (props) => {
                             values: { [name]: e.target.checked },
                           })
                         }
-                        // indeterminate={checked[0] !== checked[1]}
-                        // onChange={handleCheckAll}
                       />
                     }
                   />

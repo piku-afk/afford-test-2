@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   ButtonGroup,
   Card,
   Divider,
@@ -8,7 +7,6 @@ import {
   Stack,
   Table,
   TableBody,
-  TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -16,47 +14,21 @@ import Image from 'next/image';
 import CloseIcon from '@mui/icons-material/Close';
 import CompareIcon from '@mui/icons-material/Compare';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { styled } from '@mui/material';
 import { Product } from '@/context/initialState';
 import { useGlobalStore } from '@/context/GlobalStore';
 import { ActionTypes } from '@/context/reducer';
 import { FC } from 'react';
+import {
+  CartOptionButton,
+  CartTableCell,
+  QuantityButton,
+} from '../StyledMuiComponents';
 
-const CustomButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  paddingTop: 0,
-  paddingBottom: 0,
-  textTransform: 'capitalize',
-  fontSize: 12,
-  lineHeight: '20px',
-  '& 	.MuiButton-startIcon': {
-    '& > svg': {
-      color: 'black',
-      fontSize: 14,
-    },
-  },
-}));
-
-const QuantityButton = styled(Button)({
-  borderRadius: 12,
-  textTransform: 'capitalize',
-  fontSize: 12,
-  lineHeight: '20px',
-  backgroundColor: '#f9f9f9',
-});
-
-const CustomTableCell = styled(TableCell)({
-  borderBottom: 'none',
-  paddingLeft: 0,
-  paddingTop: 2,
-  paddingBottom: 2,
-});
-
-type Props = {
+type ProductCardProps = {
   product: Product;
 };
 
-export const ProductCard: FC<Props> = (props) => {
+export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product } = props;
   const { category, description, image, price, rating, title, quantity } =
     product;
@@ -87,10 +59,10 @@ export const ProductCard: FC<Props> = (props) => {
               spacing={0.4}
               alignItems='flex-start'
               justifyContent='space-between'>
-              <CustomButton startIcon={<FavoriteBorderIcon />} size='small'>
+              <CartOptionButton startIcon={<FavoriteBorderIcon />} size='small'>
                 Wishlist
-              </CustomButton>
-              <CustomButton
+              </CartOptionButton>
+              <CartOptionButton
                 startIcon={
                   <CompareIcon
                     sx={(theme) => ({ color: theme.palette.error.light })}
@@ -98,13 +70,13 @@ export const ProductCard: FC<Props> = (props) => {
                 }
                 size='small'>
                 Compare
-              </CustomButton>
-              <CustomButton
+              </CartOptionButton>
+              <CartOptionButton
                 startIcon={<CloseIcon />}
                 size='small'
                 onClick={removeFromCart}>
                 Remove
-              </CustomButton>
+              </CartOptionButton>
             </Stack>
           </Box>
           <Box sx={{ flexGrow: 1 }}>
@@ -114,7 +86,7 @@ export const ProductCard: FC<Props> = (props) => {
             <Table size='small'>
               <TableBody>
                 <TableRow>
-                  <CustomTableCell align='left'>
+                  <CartTableCell align='left'>
                     <Typography
                       sx={(theme) => ({
                         fontSize: 12,
@@ -122,13 +94,13 @@ export const ProductCard: FC<Props> = (props) => {
                       })}>
                       Category
                     </Typography>
-                  </CustomTableCell>
-                  <CustomTableCell>
+                  </CartTableCell>
+                  <CartTableCell>
                     <Typography sx={{ fontSize: 12 }}>{category}</Typography>
-                  </CustomTableCell>
+                  </CartTableCell>
                 </TableRow>
                 <TableRow>
-                  <CustomTableCell>
+                  <CartTableCell>
                     <Typography
                       sx={(theme) => ({
                         fontSize: 12,
@@ -136,8 +108,8 @@ export const ProductCard: FC<Props> = (props) => {
                       })}>
                       Description
                     </Typography>
-                  </CustomTableCell>
-                  <CustomTableCell>
+                  </CartTableCell>
+                  <CartTableCell>
                     <Typography
                       sx={{
                         fontSize: 12,
@@ -148,7 +120,7 @@ export const ProductCard: FC<Props> = (props) => {
                       }}>
                       {description}
                     </Typography>
-                  </CustomTableCell>
+                  </CartTableCell>
                 </TableRow>
               </TableBody>
             </Table>

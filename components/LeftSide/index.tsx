@@ -13,17 +13,15 @@ const initialFormData = {
   brands: {} as { [key: string]: boolean },
 };
 
-type Props = {
+type LeftSideProps = {
   urlBrands: string[];
   urlCategories: { [key: string]: string[] };
 };
 
-export const LeftSide: FC<Props> = (props) => {
+export const LeftSide: FC<LeftSideProps> = (props) => {
   const { urlBrands, urlCategories } = props;
   const [formData, setFormData] = useState(initialFormData);
   const { push } = useRouter();
-
-  console.log(urlCategories);
 
   useEffect(() => {
     const brandData = {} as { [key: string]: boolean };
@@ -39,7 +37,11 @@ export const LeftSide: FC<Props> = (props) => {
       });
     });
 
-    urlBrands.forEach((item) => (brandData[item] = true));
+    urlBrands.forEach((item) => {
+      if (item) {
+        brandData[item] = true;
+      }
+    });
     setFormData((prev) => ({ ...prev, brands: brandData, categories }));
   }, [urlBrands, urlCategories]);
 
@@ -79,9 +81,10 @@ export const LeftSide: FC<Props> = (props) => {
     const result = Object.keys(brands)
       .filter((brand) => brands[brand])
       .join(',');
+
     push(
       {
-        pathname: '/test',
+        pathname: '/',
         query: {
           ...(result && { brands: result }),
           ...(Object.keys(categoryData).length > 0 && {
@@ -103,12 +106,9 @@ export const LeftSide: FC<Props> = (props) => {
             handleChange={handleCategoryChange}
           />
         </FormSection>
+
         <FormSection label='Brands'>
-          <Brands
-            urlBrands={urlBrands}
-            value={formData.brands}
-            handleChange={handleBrandChange}
-          />
+          <Brands value={formData.brands} handleChange={handleBrandChange} />
         </FormSection>
 
         <FormSection label='Rating'>
