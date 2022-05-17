@@ -10,7 +10,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
 import CloseIcon from '@mui/icons-material/Close';
 import CompareIcon from '@mui/icons-material/Compare';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -19,9 +18,11 @@ import { useGlobalStore } from '@/context/GlobalStore';
 import { ActionTypes } from '@/context/reducer';
 import { FC } from 'react';
 import {
+  CartImageContainer,
   CartOptionButton,
   CartTableCell,
   QuantityButton,
+  StyledImage,
 } from '../StyledMuiComponents';
 
 type ProductCardProps = {
@@ -47,14 +48,16 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
         }}>
         <Stack direction='row' spacing={2}>
           <Box>
-            <Image
-              style={{ borderRadius: 8 }}
-              src={image}
-              width={100}
-              height={67}
-              alt='some'
-              objectFit='cover'
-            />
+            <CartImageContainer>
+              <StyledImage
+                src={image}
+                alt={`${title}'s image`}
+                layout='fill'
+                objectFit='contain'
+                loading='lazy'
+              />
+            </CartImageContainer>
+
             <Stack
               spacing={0.4}
               alignItems='flex-start'

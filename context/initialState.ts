@@ -2,6 +2,7 @@ export type Brand = {
   ID: string;
   name: string;
 };
+
 export type Category = Brand & {
   subCategories: Category[];
 };

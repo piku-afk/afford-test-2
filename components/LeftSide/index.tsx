@@ -2,6 +2,7 @@ import { Button, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
 import { FC, FormEvent, useEffect, useState } from 'react';
+import { BaseButton } from '../StyledMuiComponents';
 import { Brands } from './brands';
 import { Categories } from './categories';
 import { Price } from './price';
@@ -26,6 +27,7 @@ export const LeftSide: FC<LeftSideProps> = (props) => {
   useEffect(() => {
     const brandData = {} as { [key: string]: boolean };
     const categories = {} as { [key: string]: { [key: string]: boolean } };
+
     Object.keys(urlCategories).map((parent) => {
       const child = urlCategories[parent];
       child.map((item) => {
@@ -129,12 +131,11 @@ export const LeftSide: FC<LeftSideProps> = (props) => {
             disableElevation>
             Apply
           </Button>
-          <Button
+          <BaseButton
             sx={(theme) => ({ color: theme.palette.text.primary })}
-            disabled
             onClick={() => setFormData(initialFormData)}>
             Reset
-          </Button>
+          </BaseButton>
         </Stack>
       </form>
     </Box>

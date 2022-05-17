@@ -32,9 +32,11 @@ export const reducer = (
   action: ActionInterface
 ): initialStateType => {
   const { type, payload } = action;
+
   switch (type) {
     case ActionTypes.setBrands:
       return { ...state, brands: payload };
+
     case ActionTypes.addToCart: {
       const { id } = payload;
       const searchIndex = state.cart.findIndex((item) => item.id === id);
@@ -52,13 +54,16 @@ export const reducer = (
 
       return { ...state, cart: [...state.cart, { ...payload, quantity: 1 }] };
     }
+
     case ActionTypes.removeFromCart: {
       const { cart } = state;
       const newCart = cart.filter((item) => item.id !== payload.id);
       return { ...state, cart: newCart };
     }
+
     case ActionTypes.setCategories:
       return { ...state, categories: payload };
+
     default:
       return state;
   }

@@ -2,11 +2,11 @@ import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FC, PropsWithChildren } from 'react';
 
-type Props = {
+type FormSectionProps = {
   label: string;
 };
 
-export const FormSection: FC<PropsWithChildren<Props>> = (props) => {
+export const FormSection: FC<PropsWithChildren<FormSectionProps>> = (props) => {
   const { label, children } = props;
 
   return (

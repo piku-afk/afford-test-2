@@ -27,6 +27,10 @@ const CategoryDropdown = () => {
         height: 18,
       })}>
       <SearchButton
+        id='category-menu-button'
+        aria-controls={open ? 'category-menu' : undefined}
+        aria-haspopup='true'
+        aria-expanded={open ? 'true' : undefined}
         color='secondary'
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}>
@@ -34,7 +38,7 @@ const CategoryDropdown = () => {
         All categories
       </SearchButton>
       <Menu
-        id='demo-customized-menu'
+        id='category-menu'
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}

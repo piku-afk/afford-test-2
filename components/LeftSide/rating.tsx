@@ -13,7 +13,7 @@ export const Rating = () => {
             label={
               <MuiRating
                 readOnly
-                name={`${item} star rating`}
+                name={`${item}-star-rating`}
                 size='small'
                 value={item}
               />

@@ -19,12 +19,16 @@ export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
   };
   const open = Boolean(anchorEl);
   const { name, subCategories } = category;
+  const menuId = `${name}-menu`;
 
   return (
     <>
       <BaseButton
+        aria-controls={open ? menuId : undefined}
+        aria-haspopup='true'
+        aria-expanded={open ? 'true' : undefined}
         size='small'
-        id='unique-id'
+        id={`${name}-menu-button`}
         variant='contained'
         disableElevation
         onClick={handleClick}
@@ -32,7 +36,7 @@ export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
         {name}
       </BaseButton>
       <Menu
-        id='demo-customized-menu'
+        id={menuId}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}

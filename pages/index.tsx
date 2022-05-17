@@ -1,10 +1,10 @@
+import { Stack } from '@mui/material';
 import { LeftSide } from '@/components/LeftSide';
 import { RightSide } from '@/components/RightSide';
 import { Product } from '@/context/initialState';
 import { DefaultLayout } from '@/layouts/default';
 import { ParentWrapper } from '@/layouts/wrapper';
 import { Constants } from '@/utils/Constants';
-import { Stack } from '@mui/material';
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,

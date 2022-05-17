@@ -1,4 +1,3 @@
-import { useGlobalStore } from '@/context/GlobalStore';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
@@ -9,25 +8,28 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useGlobalStore } from '@/context/GlobalStore';
 import { FC } from 'react';
 import { ProductCard } from './productCard';
 
-type CardProps = {
+type CartProps = {
   id: string;
   anchorElement: Element | null;
   handleClose: () => void;
 };
 
-export const Cart: FC<CardProps> = (props) => {
+export const Cart: FC<CartProps> = (props) => {
   const { id, anchorElement, handleClose } = props;
   const {
     state: { cart = [] },
   } = useGlobalStore();
 
-  const total = cart.reduce((initial, next) => {
-    const { price, quantity = 1 } = next;
-    return +price * quantity + initial;
-  }, 0);
+  const total = cart
+    .reduce((initial, next) => {
+      const { price, quantity = 1 } = next;
+      return +price * quantity + initial;
+    }, 0)
+    .toFixed(2);
 
   const emptyCart = cart.length === 0;
 

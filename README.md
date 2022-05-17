@@ -16,7 +16,7 @@ After starting the development server, navigate to http://localhost:3000. Below 
 
 ## Comments
 
-As per the requirement, the page is server-side rendered, with brands and categories as query parameters. In a typical scenario, all categories and brand names are static and not change frequently, so I am saving categories and brand names in the global state. Since there are randomly generated brand names and categories on each request to the server, it causes an issue.
+As per the requirement, the page is server-side rendered, with brands and categories as query parameters. In a typical scenario, all categories and brand names are static and does not change frequently, so I am saving categories and brand names in the global state. Since there are randomly generated brand names and categories on each request to the server, it causes an issue.
 
 So let's say when you first opened the page, there will be a list of some brands. When you select one or more brands you can see the URL is updated, but when you refresh the page with the same URL, you will see another set of randomly selected brands that might or might not contain the previously selected brands which are present in the URL.
 

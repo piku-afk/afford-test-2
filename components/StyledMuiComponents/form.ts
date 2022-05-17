@@ -13,7 +13,7 @@ export const BrandLabel = styled(FormControlLabel)({
   },
 });
 
-// this label is to be use InputField defined in inputField.ts
+// this label is to be used with InputField defined in inputField.ts
 export const InputLabel = styled(MuiInputLabel)(({ theme }) => ({
   fontWeight: 600,
   color: theme.palette.text.primary,

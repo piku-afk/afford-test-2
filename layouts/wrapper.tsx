@@ -12,8 +12,8 @@ export const ParentWrapper: FC<PropsWithChildren<ParentWrapperProps>> = (
   return (
     <Container
       maxWidth='xl'
-      {...restProps}
-      style={{ paddingLeft: 48, paddingRight: 48 }}>
+      style={{ paddingLeft: 48, paddingRight: 48 }}
+      {...restProps}>
       {children}
     </Container>
   );

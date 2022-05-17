@@ -16,8 +16,9 @@ const GlobalContext = createContext<GlobalContextType>({
 
 export const useGlobalStore = () => useContext(GlobalContext);
 
-type Props = {};
-export const GlobalStore: FC<PropsWithChildren<Props>> = (props) => {
+type GlobalStoreProps = {};
+
+export const GlobalStore: FC<PropsWithChildren<GlobalStoreProps>> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
