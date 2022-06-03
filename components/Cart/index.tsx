@@ -35,6 +35,7 @@ export const Cart: FC<CartProps> = (props) => {
 
   return (
     <Popover
+      aria-label='cart-popup'
       id={id}
       open={Boolean(anchorElement)}
       anchorEl={anchorElement}
@@ -71,6 +72,7 @@ export const Cart: FC<CartProps> = (props) => {
             <IconButton
               sx={{ marginLeft: 'auto' }}
               size='small'
+              aria-label='close-cart'
               onClick={handleClose}>
               <CloseIcon />
             </IconButton>

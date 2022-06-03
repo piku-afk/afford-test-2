@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
-import { LeftSide } from '@/components/LeftSide';
-import { RightSide } from '@/components/RightSide';
+import { FiltersSection } from '@/components/FiltersSection';
+import { ProductList } from '@/components/ProductList';
 import { Product } from '@/context/initialState';
 import { DefaultLayout } from '@/layouts/default';
 import { ParentWrapper } from '@/layouts/wrapper';
@@ -55,8 +55,8 @@ const Home: NextPage = (
       </Head>
       <ParentWrapper sx={{ paddingY: 6 }}>
         <Stack direction='row' spacing={2}>
-          <LeftSide urlBrands={brands} urlCategories={categories} />
-          <RightSide products={products} />
+          <FiltersSection urlBrands={brands} urlCategories={categories} />
+          <ProductList products={products} />
         </Stack>
       </ParentWrapper>
     </DefaultLayout>

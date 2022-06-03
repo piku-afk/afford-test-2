@@ -38,6 +38,7 @@ const CategoryDropdown = () => {
         All categories
       </SearchButton>
       <Menu
+        aria-label='category-menu'
         id='category-menu'
         anchorEl={anchorEl}
         open={open}
@@ -73,6 +74,10 @@ export const SearchBar = () => {
   return (
     <Box sx={{ marginLeft: 'auto', marginRight: 'auto', minWidth: 640 }}>
       <SearchField
+        inputProps={{
+          'aria-label': 'search',
+          name: 'search',
+        }}
         placeholder='Search for Products, categories...'
         color='secondary'
         size='small'

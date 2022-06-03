@@ -18,11 +18,11 @@ import {
   StyledImage,
 } from '../StyledMuiComponents';
 
-type RightSideProps = {
+type ProductListProps = {
   products: Product[];
 };
 
-export const RightSide: FC<RightSideProps> = (props) => {
+export const ProductList: FC<ProductListProps> = (props) => {
   const { products } = props;
   const { dispatch } = useGlobalStore();
 
@@ -39,6 +39,7 @@ export const RightSide: FC<RightSideProps> = (props) => {
         return (
           <Grid key={id} item xs={4}>
             <Card
+              data-testid='product-card'
               variant='outlined'
               sx={{ borderRadius: '12px', height: '100%' }}>
               <CardContent style={{ padding: 16, height: '100%' }}>
@@ -104,7 +105,7 @@ export const RightSide: FC<RightSideProps> = (props) => {
                     variant='contained'
                     disableElevation
                     onClick={() => handleAddToCart(product)}>
-                    Add to Card
+                    Add to Cart
                   </Button>
                 </Stack>
               </CardContent>

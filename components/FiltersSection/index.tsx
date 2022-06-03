@@ -14,12 +14,12 @@ const initialFormData = {
   brands: {} as { [key: string]: boolean },
 };
 
-type LeftSideProps = {
+type FiltersSection = {
   urlBrands: string[];
   urlCategories: { [key: string]: string[] };
 };
 
-export const LeftSide: FC<LeftSideProps> = (props) => {
+export const FiltersSection: FC<FiltersSection> = (props) => {
   const { urlBrands, urlCategories } = props;
   const [formData, setFormData] = useState(initialFormData);
   const { push } = useRouter();

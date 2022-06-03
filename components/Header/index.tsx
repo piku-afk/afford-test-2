@@ -20,7 +20,7 @@ export const Header = () => {
   const hideCart = () => setAnchorElement(null);
 
   return (
-    <Box>
+    <Box component='header'>
       <AppBar
         // @ts-ignore
         disableGutters
@@ -40,13 +40,14 @@ export const Header = () => {
           </Typography>
           <SearchBar />
           <Box>
-            <IconButton size='large'>
+            <IconButton size='large' aria-label='Profile'>
               <PersonOutlinedIcon />
             </IconButton>
             <IconButton
               aria-describedby='show-cart'
               size='large'
               sx={{ marginLeft: 1 }}
+              aria-label='Cart'
               onClick={showCart}>
               <CartCountBadge
                 badgeContent={cart.length}

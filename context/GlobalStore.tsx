@@ -9,7 +9,7 @@ interface GlobalContextType {
   dispatch: Dispatch<ActionInterface>;
 }
 
-const GlobalContext = createContext<GlobalContextType>({
+export const GlobalContext = createContext<GlobalContextType>({
   state: initialState,
   dispatch: () => initialState,
 });

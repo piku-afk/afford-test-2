@@ -42,6 +42,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
   return (
     <>
       <Card
+        data-testid='product-card'
         elevation={0}
         sx={{
           borderRadius: 0,
