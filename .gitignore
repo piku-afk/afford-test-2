@@ -7,11 +7,6 @@
 
 # testing
 /coverage
-/cypress
-**/__tests__
-cypress.json
-jest.config.ts
-jest.setup.ts
 
 # next.js
 /.next/
