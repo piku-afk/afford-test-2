@@ -1,32 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { GlobalContext } from '@/context/GlobalStore';
+import * as GlobalContext2 from '@/context/GlobalStore';
 import { CategoryRow } from '../categoryRow';
+import { mockCategories } from '@/utils/testData';
 
 const user = userEvent.setup();
 
-const MockComponent = () => {
-  const mockCategories = [
-    {
-      ID: '1',
-      name: 'Hello',
-      subCategories: [
-        { ID: '1', name: 'Piyush', subCategories: [] },
-        { ID: '2', name: 'Mahato', subCategories: [] },
-      ],
-    },
-    { ID: '2', name: 'World', subCategories: [] },
-  ];
+jest.spyOn(GlobalContext2, 'useGlobalStore').mockImplementation(() => ({
+  state: { categories: mockCategories, brands: [], cart: [] },
+  dispatch: jest.fn(),
+}));
 
-  return (
-    <GlobalContext.Provider
-      value={{
-        state: { categories: mockCategories, brands: [], cart: [] },
-        dispatch: () => {},
-      }}>
-      <CategoryRow />
-    </GlobalContext.Provider>
-  );
+const MockComponent = () => {
+  return <CategoryRow />;
 };
 
 it('renders different category buttons', () => {

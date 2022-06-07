@@ -1,26 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import { SearchBar } from '../searchBar';
 import userEvent from '@testing-library/user-event';
-import { GlobalContext } from '@/context/GlobalStore';
+import * as GlobalContext from '@/context/GlobalStore';
 
 const user = userEvent.setup();
+const mockCategories = [
+  { ID: '1', name: 'Hello', subCategories: [] },
+  { ID: '2', name: 'World', subCategories: [] },
+];
 
-const MockComponent = () => {
-  const mockCategories = [
-    { ID: '1', name: 'Hello', subCategories: [] },
-    { ID: '2', name: 'World', subCategories: [] },
-  ];
-
-  return (
-    <GlobalContext.Provider
-      value={{
-        state: { categories: mockCategories, brands: [], cart: [] },
-        dispatch: () => {},
-      }}>
-      <SearchBar />
-    </GlobalContext.Provider>
-  );
-};
+jest
+  .spyOn(GlobalContext, 'useGlobalStore')
+  .mockReturnValue({
+    state: { brands: [], categories: mockCategories, cart: [] },
+    dispatch: jest.fn,
+  });
 
 // describe('Search Bar Component', () => {
 it('renders a category button', () => {
@@ -34,7 +28,7 @@ it('renders a category button', () => {
 });
 
 it('renders a category menu when category button is clicked', async () => {
-  render(<MockComponent />);
+  render(<SearchBar />);
 
   const categoryButton = screen.getByRole('button', {
     name: /all categories/i,

@@ -1,4 +1,4 @@
-import { GlobalContext } from '@/context/GlobalStore';
+import * as GlobalContext from '@/context/GlobalStore';
 import { useState } from 'react';
 import { Categories } from '../categories';
 import userEvent from '@testing-library/user-event';
@@ -17,6 +17,13 @@ const mockCategories = [
     subCategories: [{ ID: '2', name: 'sub cat', subCategories: [] }],
   },
 ];
+
+jest
+  .spyOn(GlobalContext, 'useGlobalStore')
+  .mockReturnValue({
+    state: { brands: [], categories: mockCategories, cart: [] },
+    dispatch: jest.fn,
+  });
 
 const MockCategory = () => {
   const [mockValue, setMockValue] = useState<{
@@ -39,15 +46,7 @@ const MockCategory = () => {
     }));
   };
 
-  return (
-    <GlobalContext.Provider
-      value={{
-        dispatch: () => {},
-        state: { brands: [], cart: [], categories: mockCategories },
-      }}>
-      <Categories value={mockValue} handleChange={handleCategoryChange} />
-    </GlobalContext.Provider>
-  );
+  return <Categories value={mockValue} handleChange={handleCategoryChange} />;
 };
 
 it('renders the checkboxes correctly', () => {
