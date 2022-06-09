@@ -54,8 +54,8 @@ export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
           style: { marginTop: 8 },
         }}
         sx={{ '& .MuiMenu-list': { paddingY: 0.5 } }}>
-        {subCategories.map((category) => {
-          const { ID, name } = category;
+        {subCategories.map((subCategory) => {
+          const { ID, name } = subCategory;
 
           return (
             <CategoryRowMenuItem key={ID} onClick={handleClose} disableRipple>

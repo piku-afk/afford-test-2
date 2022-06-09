@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import { ProductList } from '..';
 
-const MockRightSide = () => (
+const MockProductList = () => (
   <ProductList
     products={[
       {
@@ -18,18 +18,26 @@ const MockRightSide = () => (
   />
 );
 
-it('renders a product list', () => {
-  render(<MockRightSide />);
+describe('Product List', () => {
+  it('matches snapshot', () => {
+    const { asFragment } = render(<MockProductList />);
 
-  const productCard = screen.getByTestId('product-card');
-  const addButton = within(productCard).getByRole('button', {
-    name: /add to cart/i,
+    expect(asFragment()).toMatchSnapshot();
   });
-  const productTitle = within(productCard).getByText(/product 1/i);
 
-  expect(productCard).toBeInTheDocument();
-  expect(productTitle).toBeInTheDocument();
-  expect(addButton).toBeInTheDocument();
+  it('renders a product list', () => {
+    render(<MockProductList />);
+
+    const productCard = screen.getByTestId('product-card');
+    const addButton = within(productCard).getByRole('button', {
+      name: /add to cart/i,
+    });
+    const productTitle = within(productCard).getByText(/product 1/i);
+
+    expect(productCard).toBeInTheDocument();
+    expect(productTitle).toBeInTheDocument();
+    expect(addButton).toBeInTheDocument();
+  });
 });
 
 export {};

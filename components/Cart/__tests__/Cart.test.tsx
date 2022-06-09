@@ -1,62 +1,89 @@
-import { render, screen, within } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Cart } from '../index';
-import { initialState, Product } from '@/context/initialState';
 import * as GlobalContext from '@/context/GlobalStore';
-import { useReducer } from 'react';
-import { reducer } from '@/context/reducer';
 import { mockProducts } from '@/utils/testData';
+import { ActionTypes } from '@/context/reducer';
 
 const user = userEvent.setup();
 
 const MockCart = () => (
-  <Cart id='hello-world' anchorElement={{} as Element} handleClose={() => {}} />
+  <Cart id='hello-world' anchorElement={{} as Element} handleClose={jest.fn} />
 );
+const dispatch = jest.fn();
 
-jest.spyOn(GlobalContext, 'useGlobalStore').mockReturnValue({
-  state: { categories: [], brands: [], cart: mockProducts },
-  dispatch: jest.fn,
-});
-
-it('renders a different elements', () => {
-  render(<MockCart />);
-
-  const cartPopup = screen.getByRole('presentation');
-  const heading = screen.getByRole('heading', { name: /shopping cart/i });
-  const closeButton = screen.getByRole('button', { name: /close-cart/i });
-  const continueShopping = screen.getByText(/continue shopping/i);
-  const checkoutButton = screen.getByRole('button', {
-    name: /go to checkout/i,
+describe('Cart', () => {
+  beforeEach(() => {
+    jest.spyOn(GlobalContext, 'useGlobalStore').mockReturnValue({
+      state: { categories: [], brands: [], cart: mockProducts },
+      dispatch,
+    });
   });
 
-  expect(cartPopup).toHaveAttribute('id', 'hello-world');
-  expect(heading).toBeInTheDocument();
-  expect(closeButton).toBeInTheDocument();
-  expect(continueShopping).toBeInTheDocument();
-  expect(checkoutButton).toBeInTheDocument();
-});
+  afterEach(() => {
+    cleanup();
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
 
-// it('renders empty cart initially', () => {
-//   render(<MockCart />);
+  it('matches snapshot', () => {
+    const { asFragment } = render(<MockCart />);
 
-//   const emptyCart = screen.getByText(/empty cart/i);
-//   expect(emptyCart).toBeInTheDocument();
-// });
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it('render products in cart', async () => {
-  render(<MockCart />);
+  it('renders different elements', () => {
+    render(<MockCart />);
 
-  const emptyCart = screen.queryByText(/empty cart/i);
-  const products = screen.getAllByTestId('product-card');
+    const cartPopup = screen.getByRole('presentation');
+    const heading = screen.getByRole('heading', { name: /shopping cart/i });
+    const closeButton = screen.getByRole('button', { name: /close-cart/i });
+    const continueShopping = screen.getByText(/continue shopping/i);
+    const checkoutButton = screen.getByRole('button', {
+      name: /go to checkout/i,
+    });
 
-  expect(emptyCart).toBe(null);
-  expect(products).toHaveLength(1);
+    expect(cartPopup).toHaveAttribute('id', 'hello-world');
+    expect(heading).toBeInTheDocument();
+    expect(closeButton).toBeInTheDocument();
+    expect(continueShopping).toBeInTheDocument();
+    expect(checkoutButton).toBeInTheDocument();
+  });
 
-  await user.click(
-    within(products[0]).getByRole('button', { name: /remove/i })
-  );
+  it('renders empty cart initially', () => {
+    jest.spyOn(GlobalContext, 'useGlobalStore').mockReturnValue({
+      state: { categories: [], brands: [], cart: [] },
+      dispatch,
+    });
 
-  // expect(products).toHaveLength(0);
+    render(<MockCart />);
+
+    const emptyCart = screen.getByText(/empty cart/i);
+    expect(emptyCart).toBeInTheDocument();
+  });
+
+  it('render products in cart', async () => {
+    render(<MockCart />);
+
+    const emptyCart = screen.queryByText(/empty cart/i);
+    const products = screen.getAllByTestId('product-card');
+
+    expect(emptyCart).toBe(null);
+    expect(products).toHaveLength(1);
+
+    await user.click(
+      within(products[0]).getByRole('button', { name: /remove/i })
+    );
+
+    expect(dispatch).toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: ActionTypes.removeFromCart,
+        payload: mockProducts[0],
+      })
+    );
+  });
 });
 
 export {};

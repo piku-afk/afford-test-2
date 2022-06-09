@@ -1,6 +1,12 @@
-import { Dispatch, FC, PropsWithChildren, useContext, useReducer } from 'react';
-import { useEffect } from 'react';
-import { createContext } from 'react';
+import {
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useReducer,
+  createContext,
+  useEffect,
+} from 'react';
 import { initialState } from './initialState';
 import { ActionInterface, ActionTypes, reducer } from './reducer';
 

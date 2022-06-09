@@ -4,7 +4,13 @@ import userEvent from '@testing-library/user-event';
 
 const user = userEvent.setup();
 
-// describe('Header Component', () => {
+describe('Header Component', () => {
+  it('matches snapshot', () => {
+    const { asFragment } = render(<Header />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
 it('renders different component correctly', () => {
   render(<Header />);
 
@@ -46,4 +52,4 @@ it('opens cart popup when cart button is clicked', async () => {
 
   expect(screen.queryByRole('presentation', { name: 'cart-popup' })).toBe(null);
 });
-// });
+});

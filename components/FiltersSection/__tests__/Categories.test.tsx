@@ -1,5 +1,4 @@
 import * as GlobalContext from '@/context/GlobalStore';
-import { useState } from 'react';
 import { Categories } from '../categories';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
@@ -12,90 +11,81 @@ const mockCategories = [
     subCategories: [{ ID: '2', name: 'world', subCategories: [] }],
   },
   {
-    ID: '1',
+    ID: '2',
     name: 'second category',
     subCategories: [{ ID: '2', name: 'sub cat', subCategories: [] }],
   },
 ];
 
-jest
-  .spyOn(GlobalContext, 'useGlobalStore')
-  .mockReturnValue({
-    state: { brands: [], categories: mockCategories, cart: [] },
-    dispatch: jest.fn,
-  });
+const handleChange = jest.fn();
 
 const MockCategory = () => {
-  const [mockValue, setMockValue] = useState<{
-    [key: string]: {
-      [key: string]: boolean;
-    };
-  }>({ hello: { world: true } });
-
-  const handleCategoryChange = (params: {
-    parent: string;
-    values: { [key: string]: boolean };
-  }) => {
-    const { parent, values } = params;
-    setMockValue((prev) => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        ...values,
-      },
-    }));
-  };
-
-  return <Categories value={mockValue} handleChange={handleCategoryChange} />;
+  return (
+    <Categories
+      value={{ hello: { world: true } }}
+      handleChange={handleChange}
+    />
+  );
 };
 
-it('renders the checkboxes correctly', () => {
-  render(<MockCategory />);
-
-  const helloCheckBox = screen.getByRole('checkbox', { name: /hello/i });
-  expect(helloCheckBox).toBeInTheDocument();
-  expect(helloCheckBox).toBeChecked();
-
-  const worldCheckBox = screen.getByRole('checkbox', {
-    name: /world/i,
-  });
-  expect(worldCheckBox).toBeInTheDocument();
-  expect(worldCheckBox).toBeChecked();
-
-  const secondCheckBox = screen.getByRole('checkbox', {
-    name: /second category/i,
-  });
-  expect(secondCheckBox).toBeInTheDocument();
-  expect(secondCheckBox).not.toBeChecked();
-
-  const subCatCheckBox = screen.getByRole('checkbox', {
-    name: /sub cat/i,
-  });
-  expect(subCatCheckBox).toBeInTheDocument();
-  expect(subCatCheckBox).not.toBeChecked();
-});
-
-it('renders the checkboxes correctly when clicked', async () => {
-  render(<MockCategory />);
-
-  const helloCheckBox = screen.getByRole('checkbox', { name: /hello/i });
-  const worldCheckBox = screen.getByRole('checkbox', {
-    name: /world/i,
-  });
-  const secondCheckBox = screen.getByRole('checkbox', {
-    name: /second category/i,
-  });
-  const subCatCheckBox = screen.getByRole('checkbox', {
-    name: /sub cat/i,
+describe('Cart', () => {
+  beforeEach(() => {
+    jest.spyOn(GlobalContext, 'useGlobalStore').mockReturnValue({
+      state: { brands: [], categories: mockCategories, cart: [] },
+      dispatch: jest.fn,
+    });
   });
 
-  await user.click(helloCheckBox);
-  expect(helloCheckBox).not.toBeChecked();
-  expect(worldCheckBox).not.toBeChecked();
+  it('matches snapshot', () => {
+    const { asFragment } = render(<MockCategory />);
 
-  await user.click(subCatCheckBox);
-  expect(secondCheckBox).toBeChecked();
-  expect(subCatCheckBox).toBeChecked();
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders the checkboxes correctly', () => {
+    render(<MockCategory />);
+
+    const helloCheckBox = screen.getByRole('checkbox', { name: /hello/i });
+    expect(helloCheckBox).toBeInTheDocument();
+    expect(helloCheckBox).toBeChecked();
+
+    const worldCheckBox = screen.getByRole('checkbox', {
+      name: /world/i,
+    });
+    expect(worldCheckBox).toBeInTheDocument();
+    expect(worldCheckBox).toBeChecked();
+
+    const secondCheckBox = screen.getByRole('checkbox', {
+      name: /second category/i,
+    });
+    expect(secondCheckBox).toBeInTheDocument();
+    expect(secondCheckBox).not.toBeChecked();
+
+    const subCatCheckBox = screen.getByRole('checkbox', {
+      name: /sub cat/i,
+    });
+    expect(subCatCheckBox).toBeInTheDocument();
+    expect(subCatCheckBox).not.toBeChecked();
+  });
+
+  it('renders the checkboxes correctly when clicked', async () => {
+    render(<MockCategory />);
+
+    const helloCheckBox = screen.getByRole('checkbox', { name: /hello/i });
+    const worldCheckBox = screen.getByRole('checkbox', {
+      name: /world/i,
+    });
+    const subCatCheckBox = screen.getByRole('checkbox', {
+      name: /sub cat/i,
+    });
+
+    await user.click(helloCheckBox);
+    await user.click(subCatCheckBox);
+    await user.click(worldCheckBox);
+
+    expect(handleChange).toHaveBeenCalled();
+    expect(handleChange).toHaveBeenCalledTimes(3);
+  });
 });
 
 export {};

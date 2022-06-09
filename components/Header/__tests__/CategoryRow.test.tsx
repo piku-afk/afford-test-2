@@ -6,38 +6,44 @@ import { mockCategories } from '@/utils/testData';
 
 const user = userEvent.setup();
 
-jest.spyOn(GlobalContext2, 'useGlobalStore').mockImplementation(() => ({
-  state: { categories: mockCategories, brands: [], cart: [] },
-  dispatch: jest.fn(),
-}));
+describe('CategoryRow', () => {
+  beforeEach(() => {
+    jest.spyOn(GlobalContext2, 'useGlobalStore').mockImplementation(() => ({
+      state: { categories: mockCategories, brands: [], cart: [] },
+      dispatch: jest.fn(),
+    }));
+  });
 
-const MockComponent = () => {
-  return <CategoryRow />;
-};
+  it('matches snapshot', () => {
+    const { asFragment } = render(<CategoryRow />);
 
-it('renders different category buttons', () => {
-  render(<MockComponent />);
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-  const categoryButtons = screen.getAllByRole('button');
-  const helloButton = screen.getByRole('button', { name: /hello/i });
-  const worldButton = screen.getByRole('button', { name: /world/i });
+  it('renders different category buttons', () => {
+    render(<CategoryRow />);
 
-  expect(categoryButtons).toHaveLength(2);
-  expect(helloButton).toBeInTheDocument();
-  expect(worldButton).toBeInTheDocument();
-});
+    const categoryButtons = screen.getAllByRole('button');
+    const helloButton = screen.getByRole('button', { name: /hello/i });
+    const worldButton = screen.getByRole('button', { name: /world/i });
 
-it('renders a popup showing sub-categories', async () => {
-  render(<MockComponent />);
+    expect(categoryButtons).toHaveLength(2);
+    expect(helloButton).toBeInTheDocument();
+    expect(worldButton).toBeInTheDocument();
+  });
 
-  const helloButton = screen.getByRole('button', { name: /hello/i });
-  await user.click(helloButton);
+  it('renders a popup showing sub-categories', async () => {
+    render(<CategoryRow />);
 
-  const categoryPopup = screen.getByRole('presentation');
-  const subCategoryButtons = screen.getAllByRole('menuitem');
+    const helloButton = screen.getByRole('button', { name: /hello/i });
+    await user.click(helloButton);
 
-  expect(categoryPopup).toBeInTheDocument();
-  expect(subCategoryButtons).toHaveLength(2);
+    const categoryPopup = screen.getByRole('presentation');
+    const subCategoryButtons = screen.getAllByRole('menuitem');
+
+    expect(categoryPopup).toBeInTheDocument();
+    expect(subCategoryButtons).toHaveLength(2);
+  });
 });
 
 export {};

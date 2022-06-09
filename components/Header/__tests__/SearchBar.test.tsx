@@ -9,48 +9,55 @@ const mockCategories = [
   { ID: '2', name: 'World', subCategories: [] },
 ];
 
-jest
-  .spyOn(GlobalContext, 'useGlobalStore')
-  .mockReturnValue({
-    state: { brands: [], categories: mockCategories, cart: [] },
-    dispatch: jest.fn,
+describe('Search Bar Component', () => {
+  beforeEach(() => {
+    jest.spyOn(GlobalContext, 'useGlobalStore').mockReturnValue({
+      state: { brands: [], categories: mockCategories, cart: [] },
+      dispatch: jest.fn,
+    });
   });
 
-// describe('Search Bar Component', () => {
-it('renders a category button', () => {
-  render(<SearchBar />);
+  it('matches snapshot', () => {
+    const { asFragment } = render(<SearchBar />);
 
-  const categoryButton = screen.getByRole('button', {
-    name: /all categories/i,
+    expect(asFragment()).toMatchSnapshot();
   });
 
-  expect(categoryButton).toBeInTheDocument();
+  it('renders a category button', () => {
+    const { asFragment } = render(<SearchBar />);
+
+    const categoryButton = screen.getByRole('button', {
+      name: /all categories/i,
+    });
+
+    expect(categoryButton).toBeInTheDocument();
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders a category menu when category button is clicked', async () => {
+    render(<SearchBar />);
+
+    const categoryButton = screen.getByRole('button', {
+      name: /all categories/i,
+    });
+    await user.click(categoryButton);
+    const categoryPopup = screen.getByRole('presentation', {
+      name: /category-menu/i,
+    });
+    const categoryItems = screen.getAllByRole('menuitem');
+
+    expect(categoryPopup).toBeInTheDocument();
+    expect(categoryItems).toHaveLength(2);
+  });
+
+  it('renders empty input', () => {
+    render(<SearchBar />);
+
+    const inputField = screen.getByRole('textbox', { name: /search/i });
+
+    expect(inputField).toBeInTheDocument();
+    expect(inputField).toHaveValue('');
+  });
 });
-
-it('renders a category menu when category button is clicked', async () => {
-  render(<SearchBar />);
-
-  const categoryButton = screen.getByRole('button', {
-    name: /all categories/i,
-  });
-  await user.click(categoryButton);
-  const categoryPopup = screen.getByRole('presentation', {
-    name: /category-menu/i,
-  });
-  const categoryItems = screen.getAllByRole('menuitem');
-
-  expect(categoryPopup).toBeInTheDocument();
-  expect(categoryItems).toHaveLength(2);
-});
-
-it('renders empty input', () => {
-  render(<SearchBar />);
-
-  const inputField = screen.getByRole('textbox', { name: /search/i });
-
-  expect(inputField).toBeInTheDocument();
-  expect(inputField).toHaveValue('');
-});
-// });
 
 export {};

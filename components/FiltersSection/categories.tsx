@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { ChangeEvent, FC } from 'react';
-import { useGlobalStore } from '@/context/GlobalStore';
+import { FC } from 'react';
 import { CategoryCheckBox, StyledLabel } from '../StyledMuiComponents';
+import { useCategories } from '@/hooks/useCategories';
 
 type CategoriesProps = {
   value: {
@@ -18,20 +18,8 @@ type CategoriesProps = {
 
 export const Categories: FC<CategoriesProps> = (props) => {
   const { value, handleChange } = props;
-  const {
-    state: { categories },
-  } = useGlobalStore();
-
-  const handleCheckAll = (
-    e: ChangeEvent<HTMLInputElement>,
-    parent: string,
-    children: string[]
-  ) => {
-    const value = e.target.checked;
-    const newValues = {} as { [key: string]: boolean };
-    children.forEach((child) => (newValues[child] = value));
-    handleChange({ parent, values: newValues });
-  };
+  const { categories, handleCheckAll, handleCheckBoxChange } =
+    useCategories(handleChange);
 
   return (
     <Stack sx={{ paddingLeft: 1 }} spacing={1}>
@@ -79,10 +67,11 @@ export const Categories: FC<CategoriesProps> = (props) => {
                         color='secondary'
                         checked={checked}
                         onChange={(e) =>
-                          handleChange({
-                            parent: parentCategory,
-                            values: { [name]: e.target.checked },
-                          })
+                          handleCheckBoxChange(
+                            name,
+                            Boolean(e.target.value),
+                            parentCategory
+                          )
                         }
                       />
                     }

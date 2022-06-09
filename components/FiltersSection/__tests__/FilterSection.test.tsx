@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FiltersSection } from '..';
-import { NextRouter, useRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -45,44 +45,52 @@ const MockComponent = () => (
   </RouterContext.Provider>
 );
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+describe('FilterSection', () => {
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
-it('renders different components correctly', () => {
-  render(<MockComponent />);
+  it('matches snapshot', () => {
+    const { asFragment } = render(<MockComponent />);
 
-  expect(screen.getByText(/brands/i)).toBeInTheDocument();
-  expect(screen.getByText(/categories/i)).toBeInTheDocument();
-  expect(screen.getByText(/rating/i)).toBeInTheDocument();
-  expect(screen.getByText(/price/i)).toBeInTheDocument();
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-  expect(screen.getByRole('button', { name: /apply/i })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /reset/i })).toBeInTheDocument();
-});
+  it('renders different components correctly', () => {
+    render(<MockComponent />);
 
-it('adds query parameters to the url when submit clicked', async () => {
-  server.use(
-    rest.get('http://localhost:5000/filters', (req, res, ctx) => {
-      return res(
-        ctx.json({
-          searchFilters: {
-            categories: [],
-            brands: [
-              { ID: '1', name: 'Linkedin' },
-              { ID: '2', name: 'Sony' },
-            ],
-          },
-        })
-      );
-    })
-  );
+    expect(screen.getByText(/brands/i)).toBeInTheDocument();
+    expect(screen.getByText(/categories/i)).toBeInTheDocument();
+    expect(screen.getByText(/rating/i)).toBeInTheDocument();
+    expect(screen.getByText(/price/i)).toBeInTheDocument();
 
-  render(<MockComponent />);
+    expect(screen.getByRole('button', { name: /apply/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /reset/i })).toBeInTheDocument();
+  });
 
-  await user.click(screen.getByRole('button', { name: /apply/i }));
+  it('adds query parameters to the url when submit clicked', async () => {
+    server.use(
+      rest.get('http://localhost:5000/filters', (req, res, ctx) => {
+        return res(
+          ctx.json({
+            searchFilters: {
+              categories: [],
+              brands: [
+                { ID: '1', name: 'Linkedin' },
+                { ID: '2', name: 'Sony' },
+              ],
+            },
+          })
+        );
+      })
+    );
 
-  expect(router.push).toBeCalled();
+    render(<MockComponent />);
+
+    await user.click(screen.getByRole('button', { name: /apply/i }));
+
+    expect(router.push).toBeCalled();
+  });
 });
 
 export {};

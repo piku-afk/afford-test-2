@@ -29,15 +29,21 @@ type ProductCardProps = {
   product: Product;
 };
 
+export const useProductCard = (product: Product) => {
+  const { dispatch } = useGlobalStore();
+
+  const removeFromCart = () =>
+    dispatch({ type: ActionTypes.removeFromCart, payload: product });
+
+  return { removeFromCart };
+};
+
 export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product } = props;
   const { category, description, image, price, rating, title, quantity } =
     product;
   const { rate } = rating;
-  const { dispatch } = useGlobalStore();
-
-  const removeFromCart = () =>
-    dispatch({ type: ActionTypes.removeFromCart, payload: product });
+  const { removeFromCart } = useProductCard(product);
 
   return (
     <>
