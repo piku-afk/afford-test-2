@@ -1,8 +1,7 @@
 import { useFilterData } from '@/hooks/useFilterData';
 import { Button, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { useRouter } from 'next/router';
-import { FC, FormEvent } from 'react';
+import { FC } from 'react';
 import { BaseButton } from '../StyledMuiComponents';
 import { Brands } from './brands';
 import { Categories } from './categories';
@@ -10,51 +9,24 @@ import { Price } from './price';
 import { Rating } from './rating';
 import { FormSection } from './section';
 
-type FiltersSection = {
+interface FiltersSectionProps {
   urlBrands: string[];
   urlCategories: { [key: string]: string[] };
-};
+}
 
-export const FiltersSection: FC<FiltersSection> = (props) => {
+export const FiltersSection: FC<FiltersSectionProps> = (props) => {
   const { urlBrands, urlCategories } = props;
-  const { push } = useRouter();
-  const { formData, handleBrandChange, handleCategoryChange, resetFormData } =
-    useFilterData({
-      urlBrands,
-      urlCategories,
-    });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { brands, categories } = formData;
-
-    const categoryData = {} as { [key: string]: string[] };
-    Object.keys(categories).map((parent) => {
-      const childCategory = categories[parent];
-      const validChild = Object.keys(childCategory).filter(
-        (child) => childCategory[child]
-      );
-      categoryData[parent] = validChild;
-    });
-
-    const result = Object.keys(brands)
-      .filter((brand) => brands[brand])
-      .join(',');
-
-    push(
-      {
-        pathname: '/',
-        query: {
-          ...(result && { brands: result }),
-          ...(Object.keys(categoryData).length > 0 && {
-            categories: JSON.stringify(categoryData),
-          }),
-        },
-      },
-      undefined,
-      {}
-    );
-  };
+  const {
+    formData,
+    handleBrandChange,
+    handleCategoryChange,
+    handleSubmit,
+    resetFormData,
+  } = useFilterData({
+    urlBrands,
+    urlCategories,
+  });
 
   return (
     <Box sx={{ width: 264 }}>

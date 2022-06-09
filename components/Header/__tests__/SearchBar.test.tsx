@@ -24,14 +24,12 @@ describe('Search Bar Component', () => {
   });
 
   it('renders a category button', () => {
-    const { asFragment } = render(<SearchBar />);
-
+    render(<SearchBar />);
     const categoryButton = screen.getByRole('button', {
       name: /all categories/i,
     });
 
     expect(categoryButton).toBeInTheDocument();
-    expect(asFragment()).toMatchSnapshot();
   });
 
   it('renders a category menu when category button is clicked', async () => {

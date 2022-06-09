@@ -44,7 +44,7 @@ export const Categories: FC<CategoriesProps> = (props) => {
                   checked={parentCheck}
                   onChange={(e) =>
                     handleCheckAll(
-                      e,
+                      e.target.checked,
                       parentCategory,
                       subCategories.map(({ name }) => name)
                     )

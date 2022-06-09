@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { FormEvent, useEffect, useState } from 'react';
 
 const initialFormData = {
   categories: {} as { [key: string]: { [key: string]: boolean } },
@@ -13,6 +14,7 @@ type FiltersSection = {
 export const useFilterData = (params: FiltersSection) => {
   const { urlBrands, urlCategories } = params;
   const [formData, setFormData] = useState(initialFormData);
+  const { push } = useRouter();
 
   useEffect(() => {
     const brandData = {} as { [key: string]: boolean };
@@ -40,11 +42,11 @@ export const useFilterData = (params: FiltersSection) => {
     setFormData((prev) => ({ ...prev, brands: brandData, categories }));
   }, [urlBrands, urlCategories]);
 
-  const handleCategoryChange = (params: {
+  const handleCategoryChange = (categoryParams: {
     parent: string;
     values: { [key: string]: boolean };
   }) => {
-    const { parent, values } = params;
+    const { parent, values } = categoryParams;
     setFormData((prev) => ({
       ...prev,
       categories: {
@@ -62,5 +64,43 @@ export const useFilterData = (params: FiltersSection) => {
 
   const resetFormData = () => setFormData(initialFormData);
 
-  return { formData, handleBrandChange, handleCategoryChange, resetFormData };
+  const handleSubmit = (e: FormEvent<HTMLFormElement> | null = null) => {
+    e?.preventDefault();
+    const { brands, categories } = formData;
+
+    const categoryData = {} as { [key: string]: string[] };
+    Object.keys(categories).forEach((parent) => {
+      const childCategory = categories[parent];
+      const validChild = Object.keys(childCategory).filter(
+        (child) => childCategory[child]
+      );
+      categoryData[parent] = validChild;
+    });
+
+    const result = Object.keys(brands)
+      .filter((brand) => brands[brand])
+      .join(',');
+
+    push(
+      {
+        pathname: '/',
+        query: {
+          ...(result && { brands: result }),
+          ...(Object.keys(categoryData).length > 0 && {
+            categories: JSON.stringify(categoryData),
+          }),
+        },
+      },
+      undefined,
+      {}
+    );
+  };
+
+  return {
+    formData,
+    handleBrandChange,
+    handleCategoryChange,
+    handleSubmit,
+    resetFormData,
+  };
 };

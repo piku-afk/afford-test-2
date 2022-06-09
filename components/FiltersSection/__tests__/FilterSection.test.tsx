@@ -1,43 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FiltersSection } from '..';
-import { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { createMockRouter } from '@/utils/testData';
 
 const user = userEvent.setup();
 const server = setupServer();
 
 // mocking call for useRouter
-const createMockRouter = (router: Partial<NextRouter>): NextRouter => {
-  return {
-    basePath: '',
-    pathname: '/',
-    route: '/',
-    query: {},
-    asPath: '/',
-    back: jest.fn(),
-    beforePopState: jest.fn(),
-    prefetch: jest.fn(),
-    push: jest.fn(),
-    reload: jest.fn(),
-    replace: jest.fn(),
-    events: {
-      on: jest.fn(),
-      off: jest.fn(),
-      emit: jest.fn(),
-    },
-    isFallback: false,
-    isLocaleDomain: false,
-    isReady: true,
-    defaultLocale: 'en',
-    domainLocales: [],
-    isPreview: false,
-    ...router,
-  };
-};
-
 const router = createMockRouter({});
 const MockComponent = () => (
   <RouterContext.Provider value={router}>

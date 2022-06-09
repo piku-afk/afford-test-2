@@ -1,5 +1,4 @@
 import { useGlobalStore } from '@/context/GlobalStore';
-import { ChangeEvent } from 'react';
 
 export const useCategories = (
   handleChange: (params: {
@@ -12,11 +11,10 @@ export const useCategories = (
   } = useGlobalStore();
 
   const handleCheckAll = (
-    e: ChangeEvent<HTMLInputElement>,
+    value: boolean,
     parent: string,
     children: string[]
   ) => {
-    const value = e.target.checked;
     const newValues = {} as { [key: string]: boolean };
     children.forEach((child) => (newValues[child] = value));
     handleChange({ parent, values: newValues });
